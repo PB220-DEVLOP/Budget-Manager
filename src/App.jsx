@@ -5,8 +5,9 @@ import PrivateRoute from './components/PrivateRoute';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Home from './pages/Home';
-
-
+import Layout from './components/Layout';
+import CreateGroup from './pages/CreateGroup';
+import ViewGroups from './pages/ViewGroup';
 
 const App = () => {
   return (
@@ -15,8 +16,12 @@ const App = () => {
         <Routes>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
-         
+          <Route path="/" element={<PrivateRoute><Layout /></PrivateRoute>}>
+            <Route index element={<Home />} />
+            <Route path="create-group" element={<PrivateRoute><CreateGroup /></PrivateRoute>} />
+            <Route path="view-group" element={<PrivateRoute><ViewGroups /></PrivateRoute>} />
+            {/* Add more routes here as needed */}
+          </Route>
         </Routes>
       </Router>
     </AuthProvider>

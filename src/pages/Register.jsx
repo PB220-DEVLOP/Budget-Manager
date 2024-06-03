@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile } from 'firebase/auth';
+import { collection, addDoc } from 'firebase/firestore';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Register = () => {
@@ -14,6 +15,7 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(''); // Reset error
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
@@ -22,6 +24,13 @@ const Register = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(userCredential.user, {
         displayName: `${firstName} ${lastName}`,
+      });
+      await addDoc(collection(db, 'users'), {
+        userId: userCredential.user.uid,
+        firstName,
+        lastName,
+        email,
+        createdAt: new Date(),
       });
       navigate('/');
     } catch (error) {
@@ -32,7 +41,18 @@ const Register = () => {
   const handleGoogleSignup = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      const nameParts = user.displayName.split(' ');
+      const firstName = nameParts[0];
+      const lastName = nameParts.slice(1).join(' '); // Handle cases where the last name is more than one word
+      await addDoc(collection(db, 'users'), {
+        userId: user.uid,
+        firstName,
+        lastName,
+        email: user.email,
+        createdAt: new Date(),
+      });
       navigate('/');
     } catch (error) {
       setError(error.message);
