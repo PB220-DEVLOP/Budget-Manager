@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import { auth } from '../firebase';
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      navigate('/');
     } catch (error) {
       setError(error.message);
     }
@@ -20,6 +23,7 @@ const Login = () => {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
+      navigate('/');
     } catch (error) {
       setError(error.message);
     }
@@ -60,6 +64,9 @@ const Login = () => {
           </button>
         </div>
         {error && <p className="text-red-500 mt-4">{error}</p>}
+        <div className="mt-4 text-center">
+          <p>Don't have an account? <Link to="/register" className="text-blue-500">Create one</Link></p>
+        </div>
       </div>
     </div>
   );
