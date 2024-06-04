@@ -6,9 +6,8 @@ import { doc, getDoc } from 'firebase/firestore';
 const GroupDetails = () => {
   const { groupId } = useParams();
   const [group, setGroup] = useState(null);
-  const [bills, setBills] = useState({});
-  const [totalBill, setTotalBill] = useState(0);
-  const [splitAmounts, setSplitAmounts] = useState({});
+  const [expenses, setExpenses] = useState([]);
+  const [balances, setBalances] = useState({});
 
   useEffect(() => {
     const fetchGroup = async () => {
@@ -28,34 +27,25 @@ const GroupDetails = () => {
     fetchGroup();
   }, [groupId]);
 
-  const handleBillChange = (userId, index, amount) => {
-    setBills((prevBills) => ({
-      ...prevBills,
-      [userId]: { ...(prevBills[userId] || {}), [index]: parseFloat(amount) }
-    }));
-  };
-
-  const handleBillSplit = () => {
+  useEffect(() => {
     if (group && group.members) {
-      const totalBill = Object.values(bills).reduce((acc, val) => acc + Object.values(val).reduce((a, b) => a + b, 0), 0);
-      const amountPerPerson = totalBill / group.members.length;
+      const totalExpenses = expenses.reduce((acc, expense) => acc + expense.amount, 0);
+      const sharePerPerson = totalExpenses / group.members.length;
 
-      const splitAmounts = group.members.reduce((acc, memberId) => {
-        const amountPaid = Object.values(bills[memberId] || {}).reduce((a, b) => a + b, 0);
-        const amountOwed = amountPaid - amountPerPerson;
-        return { ...acc, [memberId]: amountOwed };
+      const userExpenses = group.members.reduce((acc, member) => {
+        const paid = expenses.filter(expense => expense.paidBy === member.id).reduce((total, expense) => total + expense.amount, 0);
+        const share = paid - sharePerPerson;
+        acc[member.id] = share;
+        return acc;
       }, {});
 
-      setTotalBill(totalBill);
-      setSplitAmounts(splitAmounts);
+      setBalances(userExpenses);
     }
-  };
+  }, [group, expenses]);
 
-  const addAmount = (userId) => {
-    setBills((prevBills) => ({
-      ...prevBills,
-      [userId]: { ...(prevBills[userId] || {}), [Object.keys(prevBills[userId] || {}).length]: '' }
-    }));
+  const addExpense = (description, amount, paidBy) => {
+    const newExpense = { description, amount: parseFloat(amount), paidBy };
+    setExpenses([...expenses, newExpense]);
   };
 
   return (
@@ -63,86 +53,70 @@ const GroupDetails = () => {
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
         <h2 className="text-2xl font-bold mb-6">{group?.groupName}</h2>
         <div>
-          <table className="w-full mb-4">
-            <thead>
-              <tr>
-                <th className="border px-4 py-2">Email</th>
-                {group && group.members && group.members.map((member) => (
-                  <th key={member.id} className="border px-4 py-2">{member.email}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="border px-4 py-2">Add Amount</td>
-                {group && group.members && group.members.map((member) => (
-                  <td key={member.id} className="border px-4 py-2">
-                    <button onClick={() => addAmount(member.id)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline">+</button>
-                  </td>
-                ))}
-              </tr>
-              {group && group.members && (
-                Array.from({ length: Math.max(...group.members.map(member => Object.keys(bills[member.id] || {}).length)), }).map((_, index) => (
-                  <tr key={index}>
-                    <td className="border px-4 py-2"></td>
-                    {group.members.map((member) => (
-                      <td key={member.id} className="border px-4 py-2">
-                        <input
-                          type="number"
-                          value={bills[member.id]?.[index] || ''}
-                          onChange={(e) => handleBillChange(member.id, index, e.target.value)}
-                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        />
-                      </td>
-                    ))}
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-          <button
-            onClick={handleBillSplit}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          >
-            Split Bill
-          </button>
-          {Object.keys(splitAmounts).length > 0 && (
-            <div className="mt-4">
-              <h3 className="text-xl font-bold mb-2">Total Bill: ${totalBill.toFixed(2)}</h3>
-              <h3 className="text-xl font-bold mb-2">Split Amounts</h3>
-              <ul>
-                {Object.entries(splitAmounts).map(([memberId, amount]) => (
-                  <li key={memberId} className="mb-2">
-                    {group.members.find((member) => member.id === memberId)?.email || memberId}{' '}
-                    {amount < 0
-                      ? `owes $${(-amount).toFixed(2)}`
-                      : `is owed $${amount.toFixed(2)}`}
-                  </li>
-                ))}
-              </ul>
-              <h3 className="text-xl font-bold mb-2">Who Owes Whom</h3>
-              <ul>
-                {Object.entries(splitAmounts).flatMap(([payerId, payerAmount]) =>
-                  Object.entries(splitAmounts).map(([payeeId, payeeAmount]) => {
-                    if (payerId !== payeeId && payerAmount < 0 && payeeAmount > 0) {
-                      const amount = Math.min(-payerAmount, payeeAmount);
-                      return (
-                        <li key={`${payerId}->${payeeId}`} className="mb-2">
-                          {group.members.find((member) => member.id === payerId)?.email || payerId} owes{' '}
-                          {group.members.find((member) => member.id === payeeId)?.email || payeeId}{' '}
-                          ${amount.toFixed(2)}
-                        </li>
-                      );
-                    }
-                    return null;
-                  })
-                )}
-              </ul>
-            </div>
-          )}
+          {/* Expense Form */}
+          <ExpenseForm group={group} addExpense={addExpense} />
+        </div>
+        {/* Display transactions */}
+        <div className="mt-8">
+          <h3 className="text-xl font-bold mb-2">Transactions</h3>
+          <ul>
+            {expenses.map((expense, index) => (
+              <li key={index} className="mb-2">
+                {group.members.find(member => member.id === expense.paidBy)?.displayName || expense.paidBy} paid ${expense.amount.toFixed(2)} for {expense.description}
+              </li>
+            ))}
+          </ul>
+        </div>
+        {/* Display balances */}
+        <div className="mt-8">
+          <h3 className="text-xl font-bold mb-2">Balances</h3>
+          <ul>
+            {Object.entries(balances).map(([userId, balance]) => (
+              <li key={userId} className={`mb-2 ${balance >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                {group.members.find(member => member.id === userId)?.displayName || userId}: {balance > 0 ? `receives $${balance.toFixed(2)}` : `owes $${(-balance).toFixed(2)}`}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>
+  );
+};
+
+const ExpenseForm = ({ group, addExpense }) => {
+  const [description, setDescription] = useState('');
+  const [amount, setAmount] = useState('');
+  const [paidBy, setPaidBy] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    addExpense(description, amount, paidBy);
+    setDescription('');
+    setAmount('');
+    setPaidBy('');
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="mb-4">
+        <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">Description</label>
+        <input type="text" id="description" value={description} onChange={(e) => setDescription(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="amount" className="block text-gray-700 text-sm font-bold mb-2">Amount</label>
+        <input type="number" id="amount" value={amount} onChange={(e) => setAmount(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="paidBy" className="block text-gray-700 text-sm font-bold mb-2">Paid By</label>
+        <select id="paidBy" value={paidBy} onChange={(e) => setPaidBy(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          <option value="">Select...</option>
+          {group && group.members && group.members.map(member => (
+            <option key={member.id} value={member.id}>{member.displayName}</option>
+          ))}
+        </select>
+      </div>
+      <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Add Expense</button>
+    </form>
   );
 };
 
