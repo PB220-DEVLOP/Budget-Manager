@@ -4,7 +4,7 @@ import { FaPlus, FaHistory, FaSignOutAlt, FaEye } from 'react-icons/fa';
 
 const Navbar = () => {
   return (
-    <div className="max-h-full w-64 bg-gray-800 text-white flex flex-col">
+    <div className="h-screen w-64 bg-gray-800 text-white flex flex-col">
       <div className="p-4 text-center text-2xl font-bold border-b border-gray-700">
         Budget Manager
       </div>
@@ -17,7 +17,7 @@ const Navbar = () => {
             </NavLink>
           </li>
           <li className="mb-4">
-            <NavLink to="/view-group" className="flex items-center p-2 rounded hover:bg-gray-700" activeClassName="bg-gray-700">
+            <NavLink to="/view-groups" className="flex items-center p-2 rounded hover:bg-gray-700" activeClassName="bg-gray-700">
               <FaEye className="mr-3" />
               View Groups
             </NavLink>

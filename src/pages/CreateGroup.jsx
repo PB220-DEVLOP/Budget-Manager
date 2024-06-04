@@ -22,6 +22,8 @@ const CreateGroup = () => {
           return {
             id: doc.id,
             displayName: data.displayName || `${data.firstName} ${data.lastName}`,
+            email: data.email || '',
+            firstName: data.firstName || '',
             ...data
           };
         }).filter(user => user.id !== currentUser.uid);
@@ -37,12 +39,14 @@ const CreateGroup = () => {
     }
   }, [currentUser]);
 
-  const handleMemberChange = (userId, checked) => {
-    if (checked) {
-      setMembers([...members, userId]);
-    } else {
-      setMembers(members.filter(id => id !== userId));
-    }
+  const handleMemberChange = (user) => {
+    setMembers(prevMembers => {
+      if (prevMembers.find(member => member.id === user.id)) {
+        return prevMembers.filter(member => member.id !== user.id);
+      } else {
+        return [...prevMembers, user];
+      }
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -53,11 +57,18 @@ const CreateGroup = () => {
     }
 
     try {
-      const docRef = await addDoc(collection(db, 'groups'), {
+      const groupData = {
         groupName,
-        members,
+        members: members.map(member => ({
+          id: member.id,
+          displayName: member.displayName || '',
+          email: member.email || '',
+          firstName: member.firstName || ''
+        })),
         createdAt: new Date(),
-      });
+      };
+
+      const docRef = await addDoc(collection(db, 'groups'), groupData);
       console.log('Document written with ID: ', docRef.id);
       navigate('/');
     } catch (e) {
@@ -91,8 +102,8 @@ const CreateGroup = () => {
                   type="checkbox"
                   id={`user_${user.id}`}
                   value={user.id}
-                  checked={members.includes(user.id)}
-                  onChange={(e) => handleMemberChange(user.id, e.target.checked)}
+                  checked={members.some(member => member.id === user.id)}
+                  onChange={() => handleMemberChange(user)}
                   className="mr-2"
                 />
                 <label htmlFor={`user_${user.id}`}>{user.displayName}</label>
