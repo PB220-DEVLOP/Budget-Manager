@@ -23,7 +23,7 @@ const Navbar = () => {
             </NavLink>
           </li>
           <li className="mb-4">
-            <NavLink to="/history" className="flex items-center p-2 rounded hover:bg-gray-700" activeClassName="bg-gray-700">
+            <NavLink to="/groups/:groupId/history" className="flex items-center p-2 rounded hover:bg-gray-700" activeClassName="bg-gray-700">
               <FaHistory className="mr-3" />
               History of Transactions
             </NavLink>

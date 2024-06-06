@@ -9,6 +9,7 @@ import Layout from './components/Layout';
 import CreateGroup from './pages/CreateGroup';
 import ViewGroups from './pages/ViewGroup';
 import GroupDetails from './pages/GroupDetails';  // Ensure this import is correct
+import History from './components/History';
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
             <Route path="create-group" element={<PrivateRoute><CreateGroup /></PrivateRoute>} />
             <Route path="view-groups" element={<PrivateRoute><ViewGroups /></PrivateRoute>} />
             <Route path="groups/:groupId" element={<PrivateRoute><GroupDetails /></PrivateRoute>} />
+            <Route path="/groups/:groupId/history" element={<PrivateRoute><History /></PrivateRoute>} />
             {/* Add more routes here as needed */}
           </Route>
         </Routes>

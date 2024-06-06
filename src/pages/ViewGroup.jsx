@@ -39,10 +39,15 @@ const ViewGroups = () => {
             {groups.map(group => (
               <li
                 key={group.id}
-                className="cursor-pointer p-4 hover:bg-gray-200 rounded-md mb-2"
+                className="cursor-pointer p-4 hover:bg-gray-200 rounded-md mb-2 flex items-center"
                 onClick={() => handleGroupClick(group.id)}
               >
-                {group.groupName}
+                <img
+                  src={group.groupImageURL || 'default-group-image.png'} // Use a default group image if none is provided
+                  alt={group.groupName}
+                  className="w-12 h-12 rounded-full mr-4"
+                />
+                <span>{group.groupName}</span>
               </li>
             ))}
           </ul>

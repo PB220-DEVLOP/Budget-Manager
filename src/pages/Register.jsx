@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { auth, db } from '../firebase';
+import { auth, db, storage } from '../firebase'; // Import storage from firebase configuration
 import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile } from 'firebase/auth';
 import { collection, addDoc } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Register = () => {
@@ -10,6 +11,7 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [photo, setPhoto] = useState(null); // State for photo
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -22,14 +24,22 @@ const Register = () => {
     }
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      let photoURL = '';
+      if (photo) {
+        const photoRef = ref(storage, `users/${userCredential.user.uid}/profile.jpg`);
+        await uploadBytes(photoRef, photo);
+        photoURL = await getDownloadURL(photoRef);
+      }
       await updateProfile(userCredential.user, {
         displayName: `${firstName} ${lastName}`,
+        photoURL, // Update profile with photo URL
       });
       await addDoc(collection(db, 'users'), {
         userId: userCredential.user.uid,
         firstName,
         lastName,
         email,
+        photoURL, // Save photo URL in Firestore
         createdAt: new Date(),
       });
       navigate('/');
@@ -51,11 +61,18 @@ const Register = () => {
         firstName,
         lastName,
         email: user.email,
+        photoURL: user.photoURL, // Save Google profile photo URL
         createdAt: new Date(),
       });
       navigate('/');
     } catch (error) {
       setError(error.message);
+    }
+  };
+
+  const handlePhotoChange = (e) => {
+    if (e.target.files[0]) {
+      setPhoto(e.target.files[0]);
     }
   };
 
@@ -110,6 +127,15 @@ const Register = () => {
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700">Photo</label>
+            <input
+              type="file"
+              onChange={handlePhotoChange}
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
