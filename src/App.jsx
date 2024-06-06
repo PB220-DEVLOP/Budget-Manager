@@ -7,9 +7,9 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import Layout from './components/Layout';
 import CreateGroup from './pages/CreateGroup';
-import ViewGroups from './pages/ViewGroup';
-import GroupDetails from './pages/GroupDetails';  // Ensure this import is correct
-import HistoryOfExpenses from './components/HistoryOfExpenses';
+import ViewGroups from './pages/ViewGroups';  // Verify this path
+import GroupDetails from './pages/GroupDetails';
+import HistoryOfExpenses from './pages/HistoryOfExpenses';
 
 const App = () => {
   return (
@@ -21,10 +21,9 @@ const App = () => {
           <Route path="/" element={<PrivateRoute><Layout /></PrivateRoute>}>
             <Route index element={<Home />} />
             <Route path="create-group" element={<PrivateRoute><CreateGroup /></PrivateRoute>} />
-            <Route path="view-groups" element={<PrivateRoute><ViewGroups /></PrivateRoute>} />
+            <Route path="view-groups" element={<PrivateRoute><ViewGroups /></PrivateRoute>} />  // Verify this route
             <Route path="groups/:groupId" element={<PrivateRoute><GroupDetails /></PrivateRoute>} />
-            <Route path="/groups/:groupId/history" element={<PrivateRoute><History /></PrivateRoute>} />
-            {/* Add more routes here as needed */}
+            <Route path="groups/:groupId/history" element={<PrivateRoute><HistoryOfExpenses /></PrivateRoute>} />
           </Route>
         </Routes>
       </Router>
