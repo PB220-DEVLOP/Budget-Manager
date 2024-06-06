@@ -9,7 +9,7 @@ import Layout from './components/Layout';
 import CreateGroup from './pages/CreateGroup';
 import ViewGroups from './pages/ViewGroup';
 import GroupDetails from './pages/GroupDetails';  // Ensure this import is correct
-import History from './components/History';
+import HistoryOfExpenses from './components/HistoryOfExpenses';
 
 const App = () => {
   return (

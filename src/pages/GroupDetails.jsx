@@ -1,9 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { db } from '../firebase';
-import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore';
-import ExpenseForm from '../components/ExpenseForm';
+import { doc, getDoc, collection, addDoc, query, where, getDocs } from 'firebase/firestore';
 
 const GroupDetails = () => {
   const { groupId } = useParams();
@@ -30,6 +28,24 @@ const GroupDetails = () => {
   }, [groupId]);
 
   useEffect(() => {
+    const fetchExpenses = async () => {
+      try {
+        const expensesQuery = query(collection(db, 'groups', groupId, 'expenses'));
+        const expensesSnapshot = await getDocs(expensesQuery);
+        const expensesData = expensesSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setExpenses(expensesData);
+      } catch (error) {
+        console.error('Error fetching expenses: ', error);
+      }
+    };
+
+    fetchExpenses();
+  }, [groupId]);
+
+  useEffect(() => {
     if (group && group.members) {
       const totalExpenses = expenses.reduce((acc, expense) => acc + expense.amount, 0);
       const sharePerPerson = totalExpenses / group.members.length;
@@ -46,16 +62,13 @@ const GroupDetails = () => {
   }, [group, expenses]);
 
   const addExpense = async (description, amount, paidBy) => {
-    const newExpense = { description, amount: parseFloat(amount), paidBy };
-    setExpenses([...expenses, newExpense]);
-    // Save transaction data to Firestore
+    const newExpense = { description, amount: parseFloat(amount), paidBy, createdAt: new Date() };
+
     try {
-      const groupDocRef = doc(db, 'groups', groupId);
-      await updateDoc(groupDocRef, {
-        transactions: arrayUnion(newExpense)
-      });
+      await addDoc(collection(db, 'groups', groupId, 'expenses'), newExpense);
+      setExpenses([...expenses, newExpense]);
     } catch (error) {
-      console.error('Error adding expense to Firestore: ', error);
+      console.error('Error adding expense: ', error);
     }
   };
 
@@ -64,7 +77,7 @@ const GroupDetails = () => {
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
         <h2 className="text-2xl font-bold mb-6">{group?.groupName}</h2>
         <div>
-          <ExpenseForm group={group} addExpense={addExpense} handleSubmit={addExpense} />
+          <ExpenseForm group={group} addExpense={addExpense} />
         </div>
         <div className="mt-8">
           <h3 className="text-xl font-bold mb-2">Transactions</h3>
@@ -88,6 +101,43 @@ const GroupDetails = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const ExpenseForm = ({ group, addExpense }) => {
+  const [description, setDescription] = useState('');
+  const [amount, setAmount] = useState('');
+  const [paidBy, setPaidBy] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    addExpense(description, amount, paidBy);
+    setDescription('');
+    setAmount('');
+    setPaidBy('');
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="mb-4">
+        <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">Description</label>
+        <input type="text" id="description" value={description} onChange={(e) => setDescription(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="amount" className="block text-gray-700 text-sm font-bold mb-2">Amount</label>
+        <input type="number" id="amount" value={amount} onChange={(e) => setAmount(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="paidBy" className="block text-gray-700 text-sm font-bold mb-2">Paid By</label>
+        <select id="paidBy" value={paidBy} onChange={(e) => setPaidBy(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          <option value="">Select...</option>
+          {group && group.members && group.members.map(member => (
+            <option key={member.id} value={member.id}>{member.displayName}</option>
+          ))}
+        </select>
+      </div>
+      <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Add Expense</button>
+    </form>
   );
 };
 
