@@ -2,13 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Carousel from "react-bootstrap/Carousel";
 import "bootstrap/dist/css/bootstrap.min.css";
-import video1 from "../assets/1.mp4"
-import video2 from "../assets/2.mp4"
-import video3 from "../assets/3.mp4"
+import video1 from "../assets/1.mp4";
+import video2 from "../assets/2.mp4";
+import video3 from "../assets/3.mp4";
 
 const HomePage = () => {
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-gray-100">
+    <div className="min-h-screen flex flex-col justify-between bg-gray-100 ml-64">
       <div>
         <Breadcrumb />
 
@@ -51,10 +51,26 @@ const HomePage = () => {
         {/* Cards */}
         <div className="container mx-auto mb-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <Card title="Group Importance of Budget Management" description="1.Financial Stability. 2.Goal Achievement. 3. Debt Reduction. 4.Emergency Preparedness. 5.Resource Allocation." link="/group/GROUP_ID_1" />
-            <Card title="Key Components of Budget Management" description="1.Income Tracking. 2.Expense Monitoring. 3.Budget Planning. 4.Savings and Investments" link="/group/GROUP_ID_2" />
-            <Card title="Steps to Effective Budget Management" description="Details about Group 3" link="/group/GROUP_ID_3" />
-            <Card title="Tools for Budget Management" description="Details about Group 4" link="/group/GROUP_ID_4" />
+            <Card
+              title="Group Importance of Budget Management"
+              description="1. Financial Stability. 2. Goal Achievement. 3. Debt Reduction. 4. Emergency Preparedness. 5. Resource Allocation."
+              link="/group/GROUP_ID_1"
+            />
+            <Card
+              title="Key Components of Budget Management"
+              description="1. Income Tracking. 2. Expense Monitoring. 3. Budget Planning. 4. Savings and Investments."
+              link="/group/GROUP_ID_2"
+            />
+            <Card
+              title="Steps to Effective Budget Management"
+              description="Details about Group 3"
+              link="/group/GROUP_ID_3"
+            />
+            <Card
+              title="Tools for Budget Management"
+              description="Details about Group 4"
+              link="/group/GROUP_ID_4"
+            />
           </div>
         </div>
       </div>
