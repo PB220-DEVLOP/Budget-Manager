@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { db } from '../firebase';
 import { doc, getDoc, collection, addDoc, query, where, getDocs } from 'firebase/firestore';
 
@@ -8,6 +8,7 @@ const GroupDetails = () => {
   const [group, setGroup] = useState(null);
   const [expenses, setExpenses] = useState([]);
   const [balances, setBalances] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchGroup = async () => {
@@ -80,16 +81,6 @@ const GroupDetails = () => {
           <ExpenseForm group={group} addExpense={addExpense} />
         </div>
         <div className="mt-8">
-          <h3 className="text-xl font-bold mb-2">Transactions</h3>
-          <ul>
-            {expenses.map((expense, index) => (
-              <li key={index} className="mb-2">
-                {group.members.find(member => member.id === expense.paidBy)?.displayName || expense.paidBy} paid ₹{expense.amount.toFixed(2)} for {expense.description}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="mt-8">
           <h3 className="text-xl font-bold mb-2">Balances</h3>
           <ul>
             {Object.entries(balances).map(([userId, balance]) => (
@@ -98,6 +89,14 @@ const GroupDetails = () => {
               </li>
             ))}
           </ul>
+        </div>
+        <div className="mt-8">
+          <button
+            onClick={() => navigate(`/groups/${groupId}/history`)}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            View Transaction History
+          </button>
         </div>
       </div>
     </div>
