@@ -5,6 +5,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import video1 from '../assets/1.mp4';
 import video2 from '../assets/2.mp4';
 import video3 from '../assets/3.mp4';
+import img1 from '../assets/img_sreen_light1.png'
+import img2 from '../assets/img_sreen_light2.png'
+import img3 from '../assets/img_sreen_light3.png'
+import img4 from '../assets/img_sreen_light4.png'
+import img5 from '../assets/img_sreen_light5.png'
+import img6 from '../assets/img_sreen_light6.png'
+import img7 from '../assets/img_sreen_light7.png'
+import img8 from '../assets/img_sreen_light8.png'
+import img9 from '../assets/img_sreen_light9.png'
+
 import { FaEnvelope, FaCamera, FaFilter, FaCalendarAlt, FaChartBar, FaBook, FaClipboardList, FaChartLine } from 'react-icons/fa';
 
 // import Card from '../components/Card'; // Ensure the correct path to the Card component
@@ -80,8 +90,38 @@ const HomePage = () => {
         </div>
         <div className="container mx-auto mb-0 ">
           <nav className="bg-gray-170 p-3 mb-4 pt-3 mt-4 container mx-auto shadow-lg">
-            <Features/>
+            <Features />
           </nav>
+        </div>
+        {/* Carousel */}
+        <div className="bg-grey-200 rounded-tl-xl container mx-auto py-12">
+        <h1 className="text-center font-bold text-5xl bg-blue-200 pt-2 italic font-mono shadow-lg rounded-full">Future Scope</h1>
+          <Carousel>
+            <Carousel.Item>
+              <img src={img1} className="w-25 d-inline items-center justify-center" alt="img1" />
+              <img src={img2} className="w-25 d-inline items-center justify-center" alt="img2" />
+              <img src={img3} className="w-25 d-inline items-center justify-center" alt="img3" />
+              <img src={img4} className="w-25 d-inline items-center justify-center" alt="img4" />
+              {/* <video className="d-block w-100" controls autoPlay loop>
+                <source src={video1} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video> */}
+              <Carousel.Caption>
+                <h3>First slide label</h3>
+                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+              </Carousel.Caption>
+            </Carousel.Item>
+            <Carousel.Item>
+              <img src={img5} className="w-25 d-inline items-center justify-center" alt="img5" />
+              <img src={img6} className="w-25 d-inline items-center justify-center" alt="img6" />
+              <img src={img7} className="w-25 d-inline items-center justify-center" alt="img7" />
+              <img src={img8} className="w-25 d-inline items-center justify-center" alt="img8" />
+              <Carousel.Caption>
+                <h3>Second slide label</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              </Carousel.Caption>
+            </Carousel.Item>
+          </Carousel>
         </div>
       </div>
 
@@ -174,7 +214,7 @@ const Features = () => {
     <div className="container mx-auto py-12 ">
       <h1 className="text-center text-grey-150 text-5xl pt-2 mb-4 italic font-mono hover:shadow-sm shadow-lg rounded">Features</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        
+
         {featuresData.map((feature, index) => (
           <div key={index} className="flex flex-col items-center text-center p-6 bg-white shadow-lg rounded-full rounded-full">
             <div className="text-5xl text-blue-500 mb-4">{feature.icon}</div>
