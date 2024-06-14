@@ -5,6 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import video1 from '../assets/1.mp4';
 import video2 from '../assets/2.mp4';
 import video3 from '../assets/3.mp4';
+import { FaEnvelope, FaCamera, FaFilter, FaCalendarAlt, FaChartBar, FaBook, FaClipboardList, FaChartLine } from 'react-icons/fa';
+
 // import Card from '../components/Card'; // Ensure the correct path to the Card component
 // import Footer from './Footer'; // Ensure the correct path to the Footer component
 // import Breadcrumb from './Breadcrumb'; // Ensure the correct path to the Breadcrumb component
@@ -76,19 +78,9 @@ const HomePage = () => {
             />
           </div>
         </div>
-        <div className="container mx-auto mb-3">
-          <nav className="bg-gray-200 p-3 rounded mb-4 mt-4 container mx-auto">
-            <div class="grid grid-cols-9 grid-flow-col gap-4">
-              <div>01</div>
-              <div>02</div>
-              <div>03</div>
-              <div>04</div>
-              <div>05</div>
-              <div>06</div>
-              <div>07</div>
-              <div>08</div>
-              <div>09</div>
-            </div>
+        <div className="container mx-auto mb-0 ">
+          <nav className="bg-gray-170 p-3 mb-4 pt-3 mt-4 container mx-auto shadow-lg">
+            <Features/>
           </nav>
         </div>
       </div>
@@ -98,6 +90,7 @@ const HomePage = () => {
     </div>
   );
 };
+
 const Card = ({ title, description, link }) => {
   // Split the description by ". " and filter out empty strings
   const descriptionLines = description.split('. ').filter(Boolean).map(line => line.trim());
@@ -132,5 +125,66 @@ const Breadcrumb = () => (
     </ol>
   </nav>
 );
+
+const featuresData = [
+  {
+    icon: <FaEnvelope />,
+    title: "Easy Content Access",
+    description: "Weekly, Monthly total budgets are provided",
+  },
+  {
+    icon: <FaCamera />,
+    title: "Photo Save",
+    description: "Save receipt or memories together",
+  },
+  {
+    icon: <FaFilter />,
+    title: "Reinforced Filter",
+    description: "Review your transactions with more filtering options",
+  },
+  {
+    icon: <FaCalendarAlt />,
+    title: "Improved Calendar Visuals",
+    description: "Review all your monthly transactions in one place",
+  },
+  {
+    icon: <FaChartBar />,
+    title: "Aesthetically Improved Charts",
+    description: "Track expenses with enhanced charts.",
+  },
+  {
+    icon: <FaBook />,
+    title: "Easier Double-entry Booking",
+    description: "Manage your savings, insurance, loans and real-estate",
+  },
+  {
+    icon: <FaClipboardList />,
+    title: "Advanced Budget Feature",
+    description: "Set a monthly budget for each category",
+  },
+  {
+    icon: <FaChartLine />,
+    title: "Asset Graphs",
+    description: "Review asset trend in your chart",
+  },
+];
+
+const Features = () => {
+  return (
+    <div className="container mx-auto py-12 ">
+      <h1 className="text-center text-grey-150 text-5xl pt-2 mb-4 italic font-mono hover:shadow-sm shadow-lg rounded">Features</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        
+        {featuresData.map((feature, index) => (
+          <div key={index} className="flex flex-col items-center text-center p-6 bg-white shadow-lg rounded-full rounded-full">
+            <div className="text-5xl text-blue-500 mb-4">{feature.icon}</div>
+            <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+            <p className="text-gray-800">{feature.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 export default HomePage;
