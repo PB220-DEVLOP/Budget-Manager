@@ -10,6 +10,9 @@ import CreateGroup from './pages/CreateGroup';
 import ViewGroups from './pages/ViewGroups';
 import GroupDetails from './pages/GroupDetails';
 import HistoryOfExpenses from './pages/HistoryOfExpenses';
+import ContactUs from './pages/ContactUs';
+import AboutUs from './pages/AboutUs';
+import Help from './pages/Help';
 
 const App = () => {
   return (
@@ -20,10 +23,13 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<PrivateRoute><Layout /></PrivateRoute>}>
             <Route index element={<Home />} />
-            <Route path="create-group" element={<CreateGroup />} />
-            <Route path="view-groups" element={<ViewGroups />} />
-            <Route path="groups/:groupId" element={<GroupDetails />} />
-            <Route path="groups/:groupId/history" element={<HistoryOfExpenses />} />
+            <Route path="create-group" element={<PrivateRoute><CreateGroup /></PrivateRoute>} />
+            <Route path="view-groups" element={<PrivateRoute><ViewGroups /></PrivateRoute>} />
+            <Route path="groups/:groupId" element={<PrivateRoute><GroupDetails /></PrivateRoute>} />
+            <Route path="groups/:groupId/history" element={<PrivateRoute><HistoryOfExpenses /></PrivateRoute>} />
+            <Route path="contact-us" element={<PrivateRoute><ContactUs /></PrivateRoute>} />
+            <Route path="about-us" element={<PrivateRoute><AboutUs /></PrivateRoute>} />
+            <Route path="help" element={<PrivateRoute><Help /></PrivateRoute>} />
           </Route>
         </Routes>
       </Router>

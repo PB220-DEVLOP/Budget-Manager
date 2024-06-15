@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { FaPlus, FaHistory, FaSignOutAlt, FaEye, FaBars, FaTimes, FaHome } from 'react-icons/fa';
+import { FaPlus, FaHistory, FaSignOutAlt, FaEye, FaBars, FaTimes, FaHome, FaEnvelope, FaInfoCircle, FaQuestionCircle } from 'react-icons/fa';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,6 +41,24 @@ const Navbar = () => {
             <NavLink to="/groups/:groupId/history" className="flex items-center p-2 rounded hover:bg-gray-700" activeClassName="bg-gray-700">
               <FaHistory className="mr-3" />
               History of Transactions
+            </NavLink>
+          </li>
+          <li className="mb-4">
+            <NavLink to="/contact-us" className="flex items-center p-2 rounded hover:bg-gray-700" activeClassName="bg-gray-700">
+              <FaEnvelope className="mr-3" />
+              Contact Us
+            </NavLink>
+          </li>
+          <li className="mb-4">
+            <NavLink to="/about-us" className="flex items-center p-2 rounded hover:bg-gray-700" activeClassName="bg-gray-700">
+              <FaInfoCircle className="mr-3" />
+              About Us
+            </NavLink>
+          </li>
+          <li className="mb-4">
+            <NavLink to="/help" className="flex items-center p-2 rounded hover:bg-gray-700" activeClassName="bg-gray-700">
+              <FaQuestionCircle className="mr-3" />
+              Help
             </NavLink>
           </li>
         </ul>
