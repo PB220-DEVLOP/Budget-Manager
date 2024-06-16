@@ -52,7 +52,7 @@ const Navbar = () => {
           <li className="mb-4">
             <NavLink to="/about-us" className="flex items-center p-2 rounded hover:bg-gray-700" activeClassName="bg-gray-700">
               <FaInfoCircle className="mr-3" />
-              About Us
+              FAQ(Frequently Asked Questions)
             </NavLink>
           </li>
           <li className="mb-4">
