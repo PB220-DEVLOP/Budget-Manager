@@ -11,7 +11,7 @@ import ViewGroups from './pages/ViewGroups';
 import GroupDetails from './pages/GroupDetails';
 import HistoryOfExpenses from './pages/HistoryOfExpenses';
 import ContactUs from './pages/ContactUs';
-import AboutUs from './pages/AboutUs';
+import FAQ from './pages/FAQ';
 import Help from './pages/Help';
 
 const App = () => {
@@ -28,7 +28,7 @@ const App = () => {
             <Route path="groups/:groupId" element={<PrivateRoute><GroupDetails /></PrivateRoute>} />
             <Route path="groups/:groupId/history" element={<PrivateRoute><HistoryOfExpenses /></PrivateRoute>} />
             <Route path="contact-us" element={<PrivateRoute><ContactUs /></PrivateRoute>} />
-            <Route path="about-us" element={<PrivateRoute><AboutUs /></PrivateRoute>} />
+            <Route path="faq" element={<PrivateRoute><FAQ /></PrivateRoute>} />
             <Route path="help" element={<PrivateRoute><Help /></PrivateRoute>} />
           </Route>
         </Routes>

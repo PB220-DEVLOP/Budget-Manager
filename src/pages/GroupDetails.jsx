@@ -74,8 +74,8 @@ const GroupDetails = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
+    <div className="flex justify-center items-center h-screen bg-gray-100 ml-64 min-h-screen flex flex-col justify-between bg-gray-100 items-center">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-screen-md md:max-w-screen-lg lg:max-w-screen-2xl mx-auto mt-12">
         <h2 className="text-2xl font-bold mb-6">{group?.groupName}</h2>
         <div>
           <ExpenseForm group={group} addExpense={addExpense} />
@@ -118,24 +118,28 @@ const ExpenseForm = ({ group, addExpense }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="mb-4">
-        <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">Description</label>
-        <input type="text" id="description" value={description} onChange={(e) => setDescription(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-      </div>
-      <div className="mb-4">
-        <label htmlFor="amount" className="block text-gray-700 text-sm font-bold mb-2">Amount</label>
-        <input type="number" id="amount" value={amount} onChange={(e) => setAmount(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-      </div>
-      <div className="mb-4">
-        <label htmlFor="paidBy" className="block text-gray-700 text-sm font-bold mb-2">Paid By</label>
-        <select id="paidBy" value={paidBy} onChange={(e) => setPaidBy(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-          <option value="">Select...</option>
-          {group && group.members && group.members.map(member => (
-            <option key={member.id} value={member.id}>{member.displayName}</option>
-          ))}
-        </select>
-      </div>
-      <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Add Expense</button>
+      {/* <div className="min-h-screen flex flex-col justify-between bg-gray-100 items-center ml-64">
+        <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-screen-md md:max-w-screen-lg lg:max-w-screen-2xl mx-auto mt-12"> */}
+          <div className="mb-4">
+            <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">Description</label>
+            <input type="text" id="description" value={description} onChange={(e) => setDescription(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="amount" className="block text-gray-700 text-sm font-bold mb-2">Amount</label>
+            <input type="number" id="amount" value={amount} onChange={(e) => setAmount(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="paidBy" className="block text-gray-700 text-sm font-bold mb-2">Paid By</label>
+            <select id="paidBy" value={paidBy} onChange={(e) => setPaidBy(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+              <option value="">Select...</option>
+              {group && group.members && group.members.map(member => (
+                <option key={member.id} value={member.id}>{member.displayName}</option>
+              ))}
+            </select>
+          </div>
+          <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Add Expense</button>
+        {/* </div>
+      </div> */}
     </form>
   );
 };

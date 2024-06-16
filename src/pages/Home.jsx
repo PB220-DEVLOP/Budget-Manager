@@ -67,24 +67,14 @@ const HomePage = () => {
               <img src={img2} className="w-25 d-inline items-center justify-center" alt="img2" />
               <img src={img3} className="w-25 d-inline items-center justify-center" alt="img3" />
               <img src={img4} className="w-25 d-inline items-center justify-center" alt="img4" />
-              {/* <video className="d-block w-100" controls autoPlay loop>
-                <source src={video1} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video> */}
-              <Carousel.Caption>
-                <h3>First slide label</h3>
-                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-              </Carousel.Caption>
+              
             </Carousel.Item>
             <Carousel.Item>
               <img src={img5} className="w-25 d-inline items-center justify-center" alt="img5" />
               <img src={img6} className="w-25 d-inline items-center justify-center" alt="img6" />
               <img src={img7} className="w-25 d-inline items-center justify-center" alt="img7" />
               <img src={img8} className="w-25 d-inline items-center justify-center" alt="img8" />
-              <Carousel.Caption>
-                <h3>Second slide label</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </Carousel.Caption>
+              
             </Carousel.Item>
           </Carousel>
         </div>
@@ -96,8 +86,6 @@ const HomePage = () => {
     </div>
   );
 };
-
-
 
 
 export default HomePage;
