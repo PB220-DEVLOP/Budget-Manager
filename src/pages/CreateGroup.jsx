@@ -11,6 +11,8 @@ const CreateGroup = () => {
   const [groupImageURL, setGroupImageURL] = useState('');
   const [members, setMembers] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
+  const [fileName, setFileName] = useState(''); // New state for file name
+  const [imagePreviewURL, setImagePreviewURL] = useState(''); // New state for image preview URL
   const navigate = useNavigate();
   const auth = getAuth();
   const currentUser = auth.currentUser;
@@ -57,6 +59,12 @@ const CreateGroup = () => {
     const file = e.target.files[0];
     if (file) {
       setGroupImage(file);
+      setFileName(file.name); // Update file name state
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreviewURL(reader.result); // Update image preview URL state
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -97,15 +105,16 @@ const CreateGroup = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen m-0 p-0 bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+    <div className="min-h-screen flex flex-col justify-between bg-gray-100 items-center ml-64">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-screen-md md:max-w-screen-lg lg:max-w-screen-2xl mx-auto mt-12">
         <h2 className="text-2xl font-bold mb-6">Create Group</h2>
         <form onSubmit={handleSubmit}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="groupName">
               Group Name
             </label>
-            <input
+            <textarea
               type="text"
               id="groupName"
               value={groupName}
@@ -118,14 +127,24 @@ const CreateGroup = () => {
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="groupImage">
               Group Image
             </label>
-            <input
-              type="file"
-              id="groupImage"
-              onChange={handleImageChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              required
-            />
+            <div className="border-dashed border-2 border-gray-300 rounded p-4 text-center cursor-pointer">
+              <label htmlFor="file-upload" className="text-blue-500">
+                <input
+                  id="file-upload"
+                  onChange={handleImageChange}
+                  type="file"
+                  className="hidden"
+                  required
+                />
+                {imagePreviewURL ? (
+                  <img src={imagePreviewURL} alt="Group" className="w-40 h-auto" />
+                ) : (
+                  fileName || "Add file or drop files here"
+                )}
+              </label>
+            </div>
           </div>
+        </div>
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">Members</label>
             <div className="grid grid-cols-3 gap-4">

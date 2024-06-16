@@ -44,9 +44,9 @@ const Navbar = () => {
             </NavLink>
           </li>
           <li className="mb-4">
-            <NavLink to="/contact-us" className="flex items-center p-2 rounded hover:bg-gray-700" activeClassName="bg-gray-700">
-              <FaEnvelope className="mr-3" />
-              Contact Us
+            <NavLink to="/help" className="flex items-center p-2 rounded hover:bg-gray-700" activeClassName="bg-gray-700">
+              <FaQuestionCircle className="mr-3" />
+              Help
             </NavLink>
           </li>
           <li className="mb-4">
@@ -56,9 +56,9 @@ const Navbar = () => {
             </NavLink>
           </li>
           <li className="mb-4">
-            <NavLink to="/help" className="flex items-center p-2 rounded hover:bg-gray-700" activeClassName="bg-gray-700">
-              <FaQuestionCircle className="mr-3" />
-              Help
+            <NavLink to="/contact-us" className="flex items-center p-2 rounded hover:bg-gray-700" activeClassName="bg-gray-700">
+              <FaEnvelope className="mr-3" />
+              Contact Us
             </NavLink>
           </li>
         </ul>
