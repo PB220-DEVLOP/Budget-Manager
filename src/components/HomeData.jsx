@@ -103,7 +103,7 @@ export const Help = () => {
                 <div className="text-center md:text-left">
                     <h2 className="text-2xl font-bold mb-2">Money Manager Help Center</h2>
                     <p className="text-lg mb-4">You can find out regular update and user manuals.</p>
-                    <a href="" onClick={help} className="inline-block bg-blue-500 text-white py-2 px-4 rounded-full shadow-lg">
+                    <a href="#" className="inline-block bg-blue-500 text-white py-2 px-4 rounded-full shadow-lg">
                         Help Center
                     </a>
                 </div>
