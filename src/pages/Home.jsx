@@ -60,7 +60,7 @@ const HomePage = () => {
         </div>
         {/* Carousel */}
         <div className="bg-grey-200 rounded-tl-xl container mx-auto py-12">
-        <h1 className="text-center font-bold text-5xl bg-blue-200 pt-2 italic font-mono shadow-lg rounded-full">Future Scope</h1>
+        <h1 className="text-center font-bold text-5xl bg-gray-300 pt-2 italic font-mono shadow-lg rounded-full">Future Scope</h1>
           <Carousel>
             <Carousel.Item>
               <img src={img1} className="w-25 d-inline items-center justify-center" alt="img1" />

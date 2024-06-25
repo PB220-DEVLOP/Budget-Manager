@@ -6,7 +6,7 @@ import help from '../pages/Help.jsx';
 
 
 export const Breadcrumb = () => (
-    <nav className="bg-gray-200 p-3 rounded mb-4 mt-4 container mx-auto">
+    <nav className="bg-gray-100 p-3 rounded mb-4 mt-4 container mx-auto">
         <ol className="list-reset flex text-grey-dark">
             <li><Link to="/" className="text-blue-600 hover:text-blue-700">Home</Link></li>
             <li><span className="mx-2">/</span></li>

@@ -6,18 +6,18 @@ import { Breadcrumb } from '../components/HomeData';
 const ContactUs = () => {
   return (
     <div className="min-h-screen flex flex-col justify-start bg-black-200 sm:px-0 lg:ml-64 rounded">
-      <div className="bg-blue-100 text-black rounded mb-4">
+      <div className="bg-gray-100 text-black rounded mb-4">
         <Breadcrumb />
       </div>
       <div className="flex flex-col lg:flex-row justify-center items-stretch h-full w-full lg:space-x-8">
-        <form className="flex-grow bg-blue-100 text-black p-8 border border-gray-700 rounded lg:w-1/2 shadow-md">
+        <form className="flex-grow bg-gray-100 text-black p-8 border border-gray-700 rounded lg:w-1/2 shadow-md">
           <h1 className="text-2xl font-bold mb-6 text-center">Submit a request</h1>
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1" htmlFor="email">Your email address:</label>
             <input
               id="email"
               type="email"
-              className="w-full border-gray-300 rounded shadow-sm p-2 border focus:outline-none focus:ring-2 focus:ring-red-500"
+              className="w-full border-gray-100 rounded shadow-sm p-2 border focus:outline-none focus:ring-2 focus:ring-red-500"
               required
             />
           </div>
@@ -25,7 +25,7 @@ const ContactUs = () => {
             <label className="block text-sm font-medium mb-1" htmlFor="device">Android/iPhone:</label>
             <select
               id="device"
-              className="w-full border-gray-300 rounded shadow-sm p-2 border focus:outline-none focus:ring-2 focus:ring-red-500"
+              className="w-full border-gray-100 rounded shadow-sm p-2 border focus:outline-none focus:ring-2 focus:ring-red-500"
               required
             >
               <option value="">-</option>
@@ -46,7 +46,7 @@ const ContactUs = () => {
             <label className="block text-sm font-medium mb-1" htmlFor="description">Description:</label>
             <textarea
               id="description"
-              className="w-full border-gray-300 rounded shadow-sm p-2 h-32 border focus:outline-none focus:ring-2 focus:ring-red-500"
+              className="w-full border-gray-100 rounded shadow-sm p-2 h-32 border focus:outline-none focus:ring-2 focus:ring-red-500"
               required
             ></textarea>
           </div>
@@ -63,7 +63,7 @@ const ContactUs = () => {
             Submit
           </button>
         </form>
-        <div className="flex-grow bg-blue-100 text-black p-8 border border-gray-700 rounded lg:w-1/2 shadow-md">
+        <div className="flex-grow bg-gray-100 text-black p-8 border border-gray-700 rounded lg:w-1/2 shadow-md">
           <h2 className="text-xl font-bold mb-4">Budget Management</h2>
           <p><strong>Email:</strong> budgetmanagement@gmail.com</p>
           <p><strong>Phone:</strong> +91-987-654-3210</p>
