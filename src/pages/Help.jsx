@@ -11,7 +11,7 @@ const HelpSupport = () => {
           </div>
           <div className="mb-8">
             <div className="relative">
-              <input type="text" placeholder="Try entering a product name" className="w-full p-3 border border-gray-300 rounded-lg" />
+              <input type="text" placeholder="Try entering a transaction detail's" className="w-full p-3 border border-gray-300 rounded-lg" />
               <button className="absolute right-3 top-2.5 text-gray-600">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16l4-4 4 4m0 0l-4-4-4 4m4-4V4" />
@@ -22,11 +22,12 @@ const HelpSupport = () => {
           <div className="mb-8">
             <div className="flex justify-center">
               <select className="p-3 border border-gray-500 rounded-lg mr-4">
-                <option>Choose a product</option>
-                <option>Product 1</option>
-                <option>Product 2</option>
+                <option>Choose a Expenditure</option>
+                <option>Room Rents</option>
+                <option>Banquet Halls</option>
+                <option>F & B Sales</option>
               </select>
-              <button className="bg-black text-white p-3 rounded-lg">Go to product page</button>
+              <button className="bg-black text-white p-3 rounded-lg">Go to Group's page</button>
             </div>
             <div className="text-center mt-4">
               <a href="#" className="text-blue-500">Show all products</a>
@@ -34,19 +35,23 @@ const HelpSupport = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <div className="border border-blue-500 p-6 rounded-lg text-center">
-              <h2 className="text-xl font-semibold mb-2">Account management</h2>
-              <p className="text-gray-600 mb-4">Read topics about managing your account, billing, and renewing your products.</p>
+              <h2 className="text-xl font-semibold mb-2">Budget Forecasting</h2>
+              <p className="text-gray-600 mb-4">Generate balance sheets at the end of each financial year to assess income, expenditure, liabilities, and assets.
+                Forecast budgets for the upcoming year to anticipate challenges, risks, and market trends.</p>
               <a href="#" className="text-blue-500">Go to help articles</a>
             </div>
             <div className="border p-6 rounded-lg text-center">
-              <h2 className="text-xl font-semibold mb-2">Product training</h2>
-              <p className="text-gray-600 mb-4">Learn of all the training services available to you organized by industry.</p>
-              <a href="#" className="text-blue-500">Explore training</a>
+              <h2 className="text-xl font-semibold mb-2">Tracking Income and Expenditure</h2>
+              <p className="text-gray-600 mb-4">Use accounting software to track every cent earned and spent.
+                Monitor income sources (room rents, banquet halls, F&B sales) and expenses (salaries, vendor payments, interest, insurance).
+                Regularly generate night audits and daily sales reports.</p>
+              <a href="#" className="text-blue-500">Explore Income and Expenditure</a>
             </div>
             <div className="border p-6 rounded-lg text-center">
-              <h2 className="text-xl font-semibold mb-2">Release notes</h2>
-              <p className="text-gray-600 mb-4">Check out the latest changes to the Help and Support experience.</p>
-              <a href="#" className="text-blue-500">Read our release notes</a>
+              <h2 className="text-xl font-semibold mb-2">Technological Innovations</h2>
+              <p className="text-gray-600 mb-4">Leverage hotel accounting software with features like PMS integration, bill automation, and customizable financial reports.
+                Nimble Property, a top accounting software in the USA, offers these capabilities</p>
+              <a href="#" className="text-blue-500">Read our Innovations notes</a>
             </div>
           </div>
           <div className="border p-6 rounded-lg text-center">
