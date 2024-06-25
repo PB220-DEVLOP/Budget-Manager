@@ -52,7 +52,7 @@ const HomePage = () => {
             />
           </div>
         </div>
-        <a href="" className="text-blue-500 text-lg ml-4 shadow-lg">Learn More...</a>
+        <a href="#" className="text-blue-500 text-lg ml-4 shadow-lg">Learn More...</a>
         <div className="container mx-auto mb-0 ">
           <nav className="bg-gray-170 p-3 mb-4 pt-3 mt-4 container mx-auto shadow-lg">
             <Features />
