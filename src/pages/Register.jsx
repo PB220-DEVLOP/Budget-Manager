@@ -1,5 +1,6 @@
+// src/components/Register.js
 import React, { useState } from 'react';
-import { auth, db, storage } from '../firebase'; // Import storage from firebase configuration
+import { auth, db, storage } from '../firebase';
 import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile } from 'firebase/auth';
 import { collection, addDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -11,15 +12,19 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [photo, setPhoto] = useState(null); // State for photo
+  const [photo, setPhoto] = useState(null);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(''); // Reset error
+    setError('');
     if (password !== confirmPassword) {
       setError('Passwords do not match');
+      return;
+    }
+    if (!photo) {
+      setError('Please upload a profile photo');
       return;
     }
     try {
@@ -32,14 +37,14 @@ const Register = () => {
       }
       await updateProfile(userCredential.user, {
         displayName: `${firstName} ${lastName}`,
-        photoURL, // Update profile with photo URL
+        photoURL,
       });
       await addDoc(collection(db, 'users'), {
         userId: userCredential.user.uid,
         firstName,
         lastName,
         email,
-        photoURL, // Save photo URL in Firestore
+        photoURL,
         createdAt: new Date(),
       });
       navigate('/');
@@ -55,13 +60,13 @@ const Register = () => {
       const user = result.user;
       const nameParts = user.displayName.split(' ');
       const firstName = nameParts[0];
-      const lastName = nameParts.slice(1).join(' '); // Handle cases where the last name is more than one word
+      const lastName = nameParts.slice(1).join(' ');
       await addDoc(collection(db, 'users'), {
         userId: user.uid,
         firstName,
         lastName,
         email: user.email,
-        photoURL: user.photoURL, // Save Google profile photo URL
+        photoURL: user.photoURL,
         createdAt: new Date(),
       });
       navigate('/');

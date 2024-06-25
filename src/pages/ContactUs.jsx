@@ -1,22 +1,71 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faDribbble, faGooglePlus, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { Breadcrumb } from '../components/HomeData';
+import { db } from '../firebase'; // Make sure to import your firebase config
+import { collection, addDoc } from 'firebase/firestore';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ContactUs = () => {
+  const [email, setEmail] = useState('');
+  const [device, setDevice] = useState('');
+  const [subject, setSubject] = useState('');
+  const [description, setDescription] = useState('');
+  const [attachment, setAttachment] = useState(null);
+  const [error, setError] = useState('');
+
+  const handleFileChange = (e) => {
+    if (e.target.files[0]) {
+      setAttachment(e.target.files[0]);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    if (!email || !device || !subject || !description) {
+      setError('All fields are required');
+      return;
+    }
+
+    try {
+      const docRef = await addDoc(collection(db, 'contactRequests'), {
+        email,
+        device,
+        subject,
+        description,
+        attachment: attachment ? attachment.name : null,
+        createdAt: new Date(),
+      });
+
+      toast.success('Request submitted successfully!');
+      setEmail('');
+      setDevice('');
+      setSubject('');
+      setDescription('');
+      setAttachment(null);
+    } catch (error) {
+      setError('Error submitting request: ' + error.message);
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col justify-start bg-black-200 sm:px-0 lg:ml-64 rounded">
       <div className="bg-gray-100 text-black rounded mb-4">
         <Breadcrumb />
       </div>
       <div className="flex flex-col lg:flex-row justify-center items-stretch h-full w-full lg:space-x-8">
-        <form className="flex-grow bg-gray-100 text-black p-8 border border-gray-700 rounded lg:w-1/2 shadow-md">
+        <form onSubmit={handleSubmit} className="flex-grow bg-gray-100 text-black p-8 border border-gray-700 rounded lg:w-1/2 shadow-md">
           <h1 className="text-2xl font-bold mb-6 text-center">Submit a request</h1>
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1" htmlFor="email">Your email address:</label>
             <input
               id="email"
               type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full border-gray-100 rounded shadow-sm p-2 border focus:outline-none focus:ring-2 focus:ring-red-500"
               required
             />
@@ -25,6 +74,8 @@ const ContactUs = () => {
             <label className="block text-sm font-medium mb-1" htmlFor="device">Android/iPhone:</label>
             <select
               id="device"
+              value={device}
+              onChange={(e) => setDevice(e.target.value)}
               className="w-full border-gray-100 rounded shadow-sm p-2 border focus:outline-none focus:ring-2 focus:ring-red-500"
               required
             >
@@ -38,6 +89,8 @@ const ContactUs = () => {
             <input
               id="subject"
               type="text"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
               className="w-full border-gray-300 rounded shadow-sm p-2 border focus:outline-none focus:ring-2 focus:ring-red-500"
               required
             />
@@ -46,6 +99,8 @@ const ContactUs = () => {
             <label className="block text-sm font-medium mb-1" htmlFor="description">Description:</label>
             <textarea
               id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               className="w-full border-gray-100 rounded shadow-sm p-2 h-32 border focus:outline-none focus:ring-2 focus:ring-red-500"
               required
             ></textarea>
@@ -54,8 +109,8 @@ const ContactUs = () => {
             <label className="block text-sm font-medium mb-1">Attachments (optional)</label>
             <div className="border-dashed border-2 border-gray-300 rounded p-4 text-center cursor-pointer">
               <label htmlFor="file-upload" className="text-blue-500">
-                <input id="file-upload" type="file" className="hidden" />
-                Add file or drop files here
+                <input id="file-upload" type="file" className="hidden" onChange={handleFileChange} />
+                {attachment ? attachment.name : 'Add file or drop files here'}
               </label>
             </div>
           </div>
@@ -78,6 +133,7 @@ const ContactUs = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

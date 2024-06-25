@@ -1,6 +1,8 @@
+// src/components/Login.js
 import React, { useState } from 'react';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
@@ -12,7 +14,18 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      
+      const usersRef = collection(db, 'users');
+      const q = query(usersRef, where('userId', '==', user.uid));
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        setError('User not registered. Please register first.');
+        return;
+      }
+
       navigate('/');
     } catch (error) {
       setError(error.message);
@@ -22,7 +35,18 @@ const Login = () => {
   const handleGoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      const usersRef = collection(db, 'users');
+      const q = query(usersRef, where('userId', '==', user.uid));
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        setError('User not registered. Please register first.');
+        return;
+      }
+
       navigate('/');
     } catch (error) {
       setError(error.message);
@@ -65,7 +89,7 @@ const Login = () => {
         </div>
         {error && <p className="text-red-500 mt-4">{error}</p>}
         <div className="mt-4 text-center">
-          <p>Don't have an account? <Link to="/register" className="text-blue-500">Create one</Link></p>
+          <p>Don't have an account? <Link to="/register" className="text-blue-500">Register</Link></p>
         </div>
       </div>
     </div>
